@@ -34,7 +34,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     }
 
     public ToDoListAdapter(List<ToDoListItem> toDoListItems) {
-        toDoListItems = toDoListItems;
+        this.toDoListItems = toDoListItems;
     }
 
     @NonNull

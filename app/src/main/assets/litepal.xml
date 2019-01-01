@@ -4,6 +4,6 @@
     <version value="1"/>
     <list>
         <!--<mapping class="com.example.calendar.db.Holiday"/>-->
-        <mapping class="com.example.myapplication.db"/>
+        <mapping class="com.example.myapplication.db.MyCalendar"/>
     </list>
 </litepal>

@@ -5,27 +5,21 @@ public class ToDoListItem {
     private String title;
     private String remark;
 
-    public int getImageId() {
-        return imageId;
+    public ToDoListItem(int imageId, String title, String remark) {
+        this.imageId = imageId;
+        this.title = title;
+        this.remark = remark;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public int getImageId() {
+        return imageId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getRemark() {
         return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 }

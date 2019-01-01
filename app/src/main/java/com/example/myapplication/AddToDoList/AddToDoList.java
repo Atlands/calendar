@@ -11,11 +11,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.db.MyCalendar;
@@ -71,22 +73,25 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
                 String category=sharedPreferences.getString("category","日程");
                 MyCalendar myCalendar=new MyCalendar();
                 myCalendar.setCategory(category);
+                if (sharedPreferences.getString("title",null).equals("")){
+                    Toast.makeText(AddToDoList.this,"标题不能为空",Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 myCalendar.setTitle(sharedPreferences.getString("title",null));
                 myCalendar.setContent(sharedPreferences.getString("content",null));
                 myCalendar.setDate(sharedPreferences.getString("selectDate",null));
-                SimpleDateFormat sim=new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+                SimpleDateFormat sim=new SimpleDateFormat("yyyy年MM月dd日");
                 try {
-                    Date time=sim.parse(sharedPreferences.getString("selectDate",null));
+                    List<Date> date=new ArrayList<>();
+                    String s[]=sharedPreferences.getString("selectDate",null).split(" ");
+                    Date time=sim.parse(s[0]);
                     Calendar calendar=Calendar.getInstance();
                     calendar.clear();
                     calendar.setTime(time);
-                    List<Date> date=new ArrayList<>();
                     date.add(time);
                     if (category.equals("日程")){
                         myCalendar.setRate(sharedPreferences.getString("rate",null));
                         switch (sharedPreferences.getString("rate",null)){
-                            case "一次性活动":
-                                break;
                             case "每天":
                                 while (time.getYear()<2100){
                                     calendar.add(Calendar.DATE,1);
@@ -135,7 +140,15 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
                             }
                         }
                         myCalendar.setRemark(sharedPreferences.getString("remark",null));
+                    }else {
+                        Calendar nowtime=Calendar.getInstance();
+                        if (time.before(nowtime.getTime())){
+                            Toast.makeText(AddToDoList.this,"倒数日不能设为现在时间之前",Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                     }
+                    Log.d("hhh",date.toString());
+                    myCalendar.setDateList(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

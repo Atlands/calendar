@@ -42,6 +42,7 @@ public class AddRicheng extends Fragment implements View.OnClickListener {
         initWidget(view);
         editor = getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE).edit();
         editor.putString("category", "日程");
+        editor.putString("rate","一次性活动");
         inputLayout.setHint("日程");
         ricTitle = inputLayout.getEditText();
         String errorText = "日程名不能为空";
