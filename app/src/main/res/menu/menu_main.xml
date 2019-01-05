@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navi_item_moments"
+        android:title="moments" />
+    <item
+        android:id="@+id/navi_item_settings"
+        android:title="settings" />
+</menu>
