@@ -1,6 +1,8 @@
 package com.example.myapplication.AddToDoList;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,14 +14,17 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 
+import java.util.Calendar;
+import java.util.UUID;
+
 public class AddToDoList extends AppCompatActivity implements View.OnClickListener {
 
     private TextView fg1, fg2, fg3, fg4;
     private FrameLayout addContent;
-    private AddRicheng fragment1;
-    private AddShengri fragment2;
-    private AddJinianri fragment3;
-    private AddDaoshu fragment4;
+    private AddRicheng fragment1 = new AddRicheng();
+    private AddShengri fragment2 = new AddShengri();
+    private AddJinianri fragment3 = new AddJinianri();
+    private AddDaoshu fragment4 = new AddDaoshu();
 
     //private Add
     @Override
@@ -28,6 +33,11 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_add_to_do_list);
         bindView();
         fg1.performClick();
+    }
+
+    public String getSelectDate() {
+        Intent intent = getIntent();
+        return intent.getStringExtra("selectDate");
     }
 
     @Override
@@ -57,9 +67,9 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
     }
 
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.replace(R.id.add_view_content,fragment);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.add_view_content, fragment);
         transaction.commit();
     }
 
@@ -82,12 +92,11 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
         fg2 = findViewById(R.id.shengri);
         fg3 = findViewById(R.id.jinian);
         fg4 = findViewById(R.id.daoshu);
-        addContent=findViewById(R.id.add_view_content);
+        addContent = findViewById(R.id.add_view_content);
 
         fg1.setOnClickListener(this);
         fg2.setOnClickListener(this);
         fg3.setOnClickListener(this);
         fg4.setOnClickListener(this);
     }
-
 }
