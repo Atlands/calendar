@@ -1,23 +1,24 @@
 package com.example.myapplication.AddToDoList;
 
-
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
 import com.example.myapplication.R;
-import com.example.myapplication.mainC.MainActivity;
-import com.wx.wheelview.widget.WheelView;
+import java.text.SimpleDateFormat;
 
 
 public class AddRicheng extends Fragment implements View.OnClickListener {
@@ -25,8 +26,6 @@ public class AddRicheng extends Fragment implements View.OnClickListener {
     private TextInputLayout inputLayout;
     private EditText ricTitle, ricContent;
     private TextView beginTime, rate, end_text;
-
-    private String beginText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,17 +39,16 @@ public class AddRicheng extends Fragment implements View.OnClickListener {
         ForegroundColorSpan fgcspan = new ForegroundColorSpan(Color.RED);
         SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errorText);
         if (ricTitle.getText() == null) ricTitle.setError(ssbuilder);
-
-        //beginText = bundle.getString("textTime");
-        beginTime.setText(beginText);
         beginTime.setOnClickListener(this);
         return view;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        beginText=((AddToDoList)activity).getSelectDate();
+    public void onResume() {
+        super.onResume();
+        SimpleDateFormat sim=new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE);
+        beginTime.setText(sharedPreferences.getString("selectDate",""));
     }
 
     private void initWidget(View view) {
@@ -67,7 +65,6 @@ public class AddRicheng extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.ric_begin_time:
                 Intent intent = new Intent(getActivity(), WheelAddTime.class);
-                intent.putExtra("wheelDate", beginText);
                 startActivity(intent);
                 break;
         }

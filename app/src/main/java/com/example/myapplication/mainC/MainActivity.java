@@ -1,6 +1,7 @@
 package com.example.myapplication.mainC;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -67,18 +68,19 @@ public class MainActivity extends AppCompatActivity {
         fabAddList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
                 try {
                     Calendar selectTime=Calendar.getInstance();
-                    Date selectDate = sim.parse(mainYear + "-" + mainMonth + "-" + mainDay+" "
+                    Date selectDate = sim.parse(mainYear + "年" + mainMonth + "月" + mainDay+"日 "
                             +selectTime.get(Calendar.HOUR_OF_DAY)+":"+selectTime.get(Calendar.MINUTE));
-                    Intent intent = new Intent(MainActivity.this, AddToDoList.class);
-                    intent.putExtra("selectDate",selectDate.toString());
-                    startActivity(intent);
-
+                    SharedPreferences.Editor editor=getSharedPreferences("selectdate",MODE_PRIVATE).edit();
+                    editor.putString("selectDate",sim.format(selectDate));
+                    editor.apply();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                Intent intent = new Intent(MainActivity.this, AddToDoList.class);
+                startActivity(intent);
             }
         });
     }

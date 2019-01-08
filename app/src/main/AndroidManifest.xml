@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddToDoList.AddToDoList" />
-        <activity android:name=".AddToDoList.WheelAddTime"></activity>
+        <activity
+            android:name=".AddToDoList.WheelAddTime"
+            android:theme="@style/dialogstyle" />
     </application>
 
 </manifest>

@@ -21,10 +21,10 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
 
     private TextView fg1, fg2, fg3, fg4;
     private FrameLayout addContent;
-    private AddRicheng fragment1 = new AddRicheng();
-    private AddShengri fragment2 = new AddShengri();
-    private AddJinianri fragment3 = new AddJinianri();
-    private AddDaoshu fragment4 = new AddDaoshu();
+    private AddRicheng fragment1 ;
+    private AddShengri fragment2 ;
+    private AddJinianri fragment3;
+    private AddDaoshu fragment4;
 
     //private Add
     @Override

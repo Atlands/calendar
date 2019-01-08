@@ -1,9 +1,13 @@
 package com.example.myapplication.AddToDoList;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -19,10 +23,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class WheelAddTime extends AppCompatActivity {
+public class WheelAddTime extends Activity {
     private TextView tv_wheel_time, wheel_qx, wheel_qd;
     private WheelView wv_date, wv_hour, wv_minute;
-    Date wheelDateTime;
+    private Date wheelDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +45,10 @@ public class WheelAddTime extends AppCompatActivity {
 
         bindView();
 
-        Intent intent = getIntent();
-        SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SharedPreferences sp=getSharedPreferences("selectdate",MODE_PRIVATE);
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
         try {
-            wheelDateTime = sim.parse(intent.getStringExtra("wheelDate"));
+            wheelDateTime = sim.parse(sp.getString("selectDate",""));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -65,7 +69,13 @@ public class WheelAddTime extends AppCompatActivity {
         wv_date.setStyle(style);
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
-        wv_date.setSelection((int) (wheelDateTime.getTime() - calendar.getTimeInMillis()) / (24 * 60 * 60 * 1000));
+        wv_date.setSelection((int) ((wheelDateTime.getTime() - calendar.getTimeInMillis()) / (24 * 60 * 60 * 1000)));
+        wv_date.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                tv_wheel_time.setText(wv_date.getSelectionItem()+" "+wv_hour.getSelectionItem()+":"+wv_minute.getSelectionItem());
+            }
+        });
 
         wv_hour.setWheelAdapter(new ArrayWheelAdapter(this));
         wv_hour.setSkin(WheelView.Skin.Holo);
@@ -73,7 +83,13 @@ public class WheelAddTime extends AppCompatActivity {
         wv_hour.setWheelSize(5);
         wv_hour.setLoop(true);
         wv_hour.setStyle(style);
-        wv_hour.setSelection(wheelDateTime.getHours());
+        wv_hour.setSelection(wheelDateTime.getHours()+1);
+        wv_hour.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                tv_wheel_time.setText(wv_date.getSelectionItem()+" "+wv_hour.getSelectionItem()+":"+wv_minute.getSelectionItem());
+            }
+        });
 
         wv_minute.setWheelAdapter(new ArrayWheelAdapter(this));
         wv_minute.setSkin(WheelView.Skin.Holo);
@@ -82,6 +98,28 @@ public class WheelAddTime extends AppCompatActivity {
         wv_minute.setLoop(true);
         wv_minute.setStyle(style);
         wv_minute.setSelection(wheelDateTime.getMinutes()/5+1);
+        wv_minute.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, Object o) {
+                tv_wheel_time.setText(wv_date.getSelectionItem()+" "+wv_hour.getSelectionItem()+":"+wv_minute.getSelectionItem());
+            }
+        });
+
+        wheel_qx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        wheel_qd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor=getSharedPreferences("selectdate",MODE_PRIVATE).edit();
+                editor.putString("selectDate",tv_wheel_time.getText().toString());
+                editor.apply();
+                finish();
+            }
+        });
     }
 
     private List createMinuteDatas() {
