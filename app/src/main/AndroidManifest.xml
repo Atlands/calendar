@@ -20,6 +20,9 @@
         <activity
             android:name=".AddToDoList.WheelAddTime"
             android:theme="@style/dialogstyle" />
+        <activity
+            android:name=".AddToDoList.Rate"
+            android:theme="@style/dialogstyle" />
     </application>
 
 </manifest>

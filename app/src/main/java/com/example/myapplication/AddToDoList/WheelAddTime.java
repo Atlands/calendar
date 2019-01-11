@@ -1,11 +1,8 @@
 package com.example.myapplication.AddToDoList;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -30,6 +27,9 @@ public class WheelAddTime extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        List dateDatas=createDateDatas();
+        List hourDatas=createHourDatas();
+        List minuteDatas=createMinuteDatas();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wheel_add_time);
 
@@ -46,7 +46,7 @@ public class WheelAddTime extends Activity {
         bindView();
 
         SharedPreferences sp=getSharedPreferences("selectdate",MODE_PRIVATE);
-        SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
+        SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
         try {
             wheelDateTime = sim.parse(sp.getString("selectDate",""));
         } catch (ParseException e) {
@@ -63,7 +63,7 @@ public class WheelAddTime extends Activity {
         //为WheelView设置一个皮肤风格（这里在WheelView中已经封装了一个Holo）
         wv_date.setSkin(WheelView.Skin.Holo);
         //这里将数据放入WheelView中
-        wv_date.setWheelData(createDateDatas());
+        wv_date.setWheelData(dateDatas);
         //设置WheelView的Style（上面已经定义）
         wv_date.setWheelSize(5);
         wv_date.setStyle(style);
@@ -79,7 +79,7 @@ public class WheelAddTime extends Activity {
 
         wv_hour.setWheelAdapter(new ArrayWheelAdapter(this));
         wv_hour.setSkin(WheelView.Skin.Holo);
-        wv_hour.setWheelData(createHourDatas());
+        wv_hour.setWheelData(hourDatas);
         wv_hour.setWheelSize(5);
         wv_hour.setLoop(true);
         wv_hour.setStyle(style);
@@ -93,7 +93,7 @@ public class WheelAddTime extends Activity {
 
         wv_minute.setWheelAdapter(new ArrayWheelAdapter(this));
         wv_minute.setSkin(WheelView.Skin.Holo);
-        wv_minute.setWheelData(createMinuteDatas());
+        wv_minute.setWheelData(minuteDatas);
         wv_minute.setWheelSize(5);
         wv_minute.setLoop(true);
         wv_minute.setStyle(style);

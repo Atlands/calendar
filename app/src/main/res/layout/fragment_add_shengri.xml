@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp">
 
         <EditText
-            android:id="@+id/richeng_title"
+            android:id="@+id/shengri_title"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/todolist_edit"
@@ -22,7 +22,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <EditText
-        android:id="@+id/richeng_content"
+        android:id="@+id/shengri_contect"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="16dp"
@@ -52,6 +52,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/shengri_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -72,22 +73,30 @@
             android:text="提醒频率" />
 
         <CheckBox
+            android:id="@+id/shengri_30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="周月生日提醒（30天）" />
 
         <CheckBox
+            android:id="@+id/shengri_100"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="100天生日提醒" />
 
         <CheckBox
+            android:id="@+id/shengri_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="每年提醒" />
     </LinearLayout>
-
+    <TextView
+        android:textSize="12sp"
+        android:layout_marginLeft="16dp"
+        android:id="@+id/shengri_end_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <View
         android:layout_width="wrap_content"
         android:layout_height="16dp" />

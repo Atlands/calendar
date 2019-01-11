@@ -68,12 +68,13 @@ public class MainActivity extends AppCompatActivity {
         fabAddList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
+                SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
                 try {
                     Calendar selectTime=Calendar.getInstance();
                     Date selectDate = sim.parse(mainYear + "年" + mainMonth + "月" + mainDay+"日 "
                             +selectTime.get(Calendar.HOUR_OF_DAY)+":"+selectTime.get(Calendar.MINUTE));
                     SharedPreferences.Editor editor=getSharedPreferences("selectdate",MODE_PRIVATE).edit();
+                    editor.clear();
                     editor.putString("selectDate",sim.format(selectDate));
                     editor.apply();
                 } catch (ParseException e) {
