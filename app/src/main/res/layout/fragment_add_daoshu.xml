@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp">
 
         <EditText
-            android:id="@+id/richeng_title"
+            android:id="@+id/daoshu_title"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/todolist_edit"
@@ -22,7 +22,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <EditText
-        android:id="@+id/richeng_content"
+        android:id="@+id/doashu_content"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="16dp"
@@ -52,6 +52,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/daoshu_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -59,6 +60,13 @@
             android:gravity="center_vertical"
             android:text="2018年12月31日" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/daoshu_end_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:textSize="12sp" />
 
     <View
         android:layout_width="wrap_content"

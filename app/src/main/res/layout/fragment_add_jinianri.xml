@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp">
 
         <EditText
-            android:id="@+id/richeng_title"
+            android:id="@+id/jinian_title"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/todolist_edit"
@@ -22,7 +22,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <EditText
-        android:id="@+id/richeng_content"
+        android:id="@+id/jinian_content"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="16dp"
@@ -52,6 +52,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/jinian_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
@@ -72,21 +73,31 @@
             android:text="提醒频率" />
 
         <CheckBox
+            android:id="@+id/jinian_30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="30天纪念日" />
 
         <CheckBox
+            android:id="@+id/jinian_100"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="100天纪念日" />
 
         <CheckBox
+            android:id="@+id/jinn_every_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="每年提醒" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/jinian_end_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:textSize="12sp" />
 
     <View
         android:layout_width="wrap_content"

@@ -22,14 +22,15 @@ public class AddShengri extends Fragment implements View.OnClickListener {
     private CheckBox checkBox1, checkBox2, checkBox3;
 
     private SharedPreferences.Editor editor;
-//    private String rate="";
 
+    String remark = "";
+    String text = "将于 " + beginTime.getText().toString() + " 后的";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_shengri, container, false);
-        bindView();
+        bindView(view);
         editor = getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE).edit();
         editor.putString("category", "生日");
         title.addTextChangedListener(new TextWatcher() {
@@ -72,16 +73,17 @@ public class AddShengri extends Fragment implements View.OnClickListener {
         title.setText(sharedPreferences.getString("title", null));
         content.setText(sharedPreferences.getString("content", null));
         beginTime.setText(sharedPreferences.getString("selectDate", null));
+        end_text.setText(text);
     }
 
-    private void bindView() {
-        title = getView().findViewById(R.id.shengri_title);
-        content = getView().findViewById(R.id.shengri_contect);
-        beginTime = getView().findViewById(R.id.shengri_time);
-        end_text = getView().findViewById(R.id.shengri_end_text);
-        checkBox1 = getView().findViewById(R.id.shengri_30);
-        checkBox2 = getView().findViewById(R.id.shengri_100);
-        checkBox3 = getView().findViewById(R.id.shengri_year);
+    private void bindView(View view) {
+        title = view.findViewById(R.id.shengri_title);
+        content = view.findViewById(R.id.shengri_contect);
+        beginTime = view.findViewById(R.id.shengri_time);
+        end_text = view.findViewById(R.id.shengri_end_text);
+        checkBox1 = view.findViewById(R.id.shengri_30);
+        checkBox2 = view.findViewById(R.id.shengri_100);
+        checkBox3 = view.findViewById(R.id.shengri_year);
 
         beginTime.setOnClickListener(this);
         checkBox1.setOnClickListener(this);
@@ -105,13 +107,23 @@ public class AddShengri extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
-        String rate="";
-        if (checkBox1.isChecked())
-            rate+="1";
-        if (checkBox2.isChecked())
-            rate+="2";
-        if (checkBox3.isChecked())
-            rate+="3";
-        editor.putString("rate",rate);
+        if (checkBox1.isChecked()) {
+            remark += "1";
+            String date[] = beginTime.getText().toString().split(" ");
+            text += "\n30天后 " + date[1] + " 提醒";
+        }
+        if (checkBox2.isChecked()) {
+            remark += "2";
+            String date[] = beginTime.getText().toString().split(" ");
+            text += "\n100天后 " + date[1] + " 提醒";
+        }
+        if (checkBox3.isChecked()) {
+            remark += "3";
+            String date[] = beginTime.getText().toString().split("年");
+            text += "\n每年 " + date[1] + "提醒";
+        }
+        editor.putString("remark", remark);
+        editor.apply();
+        end_text.setText(text);
     }
 }
