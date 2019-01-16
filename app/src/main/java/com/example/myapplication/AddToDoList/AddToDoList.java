@@ -23,14 +23,6 @@ import com.example.myapplication.R;
 import com.example.myapplication.db.MyCalendar;
 import com.example.myapplication.mainC.MainActivity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
 public class AddToDoList extends AppCompatActivity implements View.OnClickListener {
 
     private TextView fg1, fg2, fg3, fg4;
@@ -69,90 +61,24 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.todolist_sure:
-                SharedPreferences sharedPreferences = getSharedPreferences("selectdate", Context.MODE_PRIVATE);
-                String category=sharedPreferences.getString("category","日程");
-                MyCalendar myCalendar=new MyCalendar();
-                myCalendar.setCategory(category);
+                final SharedPreferences sharedPreferences = getSharedPreferences("selectdate", Context.MODE_PRIVATE);
                 if (sharedPreferences.getString("title",null).equals("")){
                     Toast.makeText(AddToDoList.this,"标题不能为空",Toast.LENGTH_SHORT).show();
                     break;
                 }
-                myCalendar.setTitle(sharedPreferences.getString("title",null));
-                myCalendar.setContent(sharedPreferences.getString("content",null));
-                myCalendar.setDate(sharedPreferences.getString("selectDate",null));
-                SimpleDateFormat sim=new SimpleDateFormat("yyyy年MM月dd日");
-                try {
-                    List<Date> date=new ArrayList<>();
-                    String s[]=sharedPreferences.getString("selectDate",null).split(" ");
-                    Date time=sim.parse(s[0]);
-                    Calendar calendar=Calendar.getInstance();
-                    calendar.clear();
-                    calendar.setTime(time);
-                    date.add(time);
-                    if (category.equals("日程")){
-                        myCalendar.setRate(sharedPreferences.getString("rate",null));
-                        switch (sharedPreferences.getString("rate",null)){
-                            case "每天":
-                                while (time.getYear()<2100){
-                                    calendar.add(Calendar.DATE,1);
-                                    date.add(calendar.getTime());
-                                }
-                                break;
-                            case "每周":
-                                while (time.getYear()<2100){
-                                    calendar.add(Calendar.DATE,7);
-                                    date.add(calendar.getTime());
-                                }
-                                break;
-                            case "每月":
-                                while (time.getYear()<2100){
-                                    calendar.add(Calendar.MONTH,1);
-                                    date.add(calendar.getTime());
-                                }
-                                break;
-                            case "每年":
-                                while (time.getYear()<2100){
-                                    calendar.add(Calendar.YEAR,1);
-                                    date.add(calendar.getTime());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                        myCalendar.setDateList(date);
-                    }else if (category.equals("生日")||category.equals("纪念日")){
-                        String remark[]=sharedPreferences.getString("remark",null).split("");
-                        for (String i:remark){
-                            calendar.setTime(time);
-                            if (i.equals("1")) {
-                                calendar.add(Calendar.DATE,30);
-                                date.add(calendar.getTime());
-                            }
-                            if (i.equals("2")) {
-                                calendar.add(Calendar.DATE,100);
-                                date.add(calendar.getTime());
-                            }
-                            if (i.equals("3")) {
-                                while (time.getYear()<2100){
-                                    calendar.add(Calendar.YEAR,1);
-                                    date.add(calendar.getTime());
-                                }
-                            }
-                        }
-                        myCalendar.setRemark(sharedPreferences.getString("remark",null));
-                    }else {
-                        Calendar nowtime=Calendar.getInstance();
-                        if (time.before(nowtime.getTime())){
-                            Toast.makeText(AddToDoList.this,"倒数日不能设为现在时间之前",Toast.LENGTH_SHORT).show();
-                            break;
-                        }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String category=sharedPreferences.getString("category","日程");
+                        MyCalendar myCalendar=new MyCalendar();
+                        myCalendar.setCategory(category);
+                        myCalendar.setTitle(sharedPreferences.getString("title",null));
+                        myCalendar.setContent(sharedPreferences.getString("content",null));
+                        myCalendar.setDate(sharedPreferences.getString("selectDate",null));
+                        myCalendar.setRate(sharedPreferences.getString("rate","一次性活动"));
+                        myCalendar.setRemark(sharedPreferences.getString("remark","3"));
                     }
-                    Log.d("hhh",date.toString());
-                    myCalendar.setDateList(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                myCalendar.save();
+                }).start();
                 Intent intent=new Intent(this,MainActivity.class);
                 startActivity(intent);
                 finish();

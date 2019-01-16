@@ -14,7 +14,6 @@ public class MyCalendar extends LitePalSupport {
     private String date;
     private String rate;
     private String remark;
-    private List<Date> dateList = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -68,11 +67,4 @@ public class MyCalendar extends LitePalSupport {
         this.remark = remark;
     }
 
-    public List<Date> getDateList() {
-        return dateList;
-    }
-
-    public void setDateList(List<Date> dateList) {
-        this.dateList = dateList;
-    }
 }
