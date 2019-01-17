@@ -77,6 +77,7 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
                         myCalendar.setDate(sharedPreferences.getString("selectDate",null));
                         myCalendar.setRate(sharedPreferences.getString("rate","一次性活动"));
                         myCalendar.setRemark(sharedPreferences.getString("remark","3"));
+                        myCalendar.save();
                     }
                 }).start();
                 Intent intent=new Intent(this,MainActivity.class);

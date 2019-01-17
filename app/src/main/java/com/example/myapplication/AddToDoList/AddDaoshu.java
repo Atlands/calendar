@@ -26,7 +26,7 @@ public class AddDaoshu extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_daoshu, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_daoshu, container, false);
         bindView(view);
         editor = getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE).edit();
         editor.putString("category", "倒数日");
@@ -62,6 +62,7 @@ public class AddDaoshu extends Fragment implements View.OnClickListener {
         });
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -69,8 +70,9 @@ public class AddDaoshu extends Fragment implements View.OnClickListener {
         title.setText(sharedPreferences.getString("title", null));
         content.setText(sharedPreferences.getString("content", null));
         beginTime.setText(sharedPreferences.getString("selectDate", null));
-        end_text.setText(beginTime.getText().toString()+" 前的每天于首页做出倒数展示，并于此时间通知栏提醒");
+        end_text.setText(beginTime.getText().toString() + " 前的每天于首页做出倒数展示，并于此时间通知栏提醒");
     }
+
     private void bindView(View view) {
         title = view.findViewById(R.id.daoshu_title);
         content = view.findViewById(R.id.doashu_content);

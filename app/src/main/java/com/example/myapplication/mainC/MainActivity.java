@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<ToDoListItem> scheduleList = new ArrayList<>();
     SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,95 +100,122 @@ public class MainActivity extends AppCompatActivity {
 
     private void initSchedule() {
         scheduleList.clear();
+
         List<MyCalendar> sehedules = LitePal.findAll(MyCalendar.class);
-        //            if (myCalendar.getTitle().equals("倒数日")){
-        //                Date nowdate = new Date();
-        //                if (!((calendar.getTime().before(nowdate) || calendar.getTime().after(myCalendar.getDateList().get(0))))) {
-        //                    int cha=(int)((myCalendar.getDateList().get(0).getTime()-calendar.getTimeInMillis())/(24*60*60*1000));
-        //                    ToDoListItem item = new ToDoListItem(image, myCalendar.getTitle(), myCalendar.getDate()+"("+cha+"天后)");
-        //                    scheduleList.add(item);
-        //                }
-        //                break;
-        //            }
-        //            if (myCalendar.getDateList().contains(calendar.getTime())) {
-        //                ToDoListItem item = new ToDoListItem(image, myCalendar.getTitle(), myCalendar.getDate());
-        //                scheduleList.add(item);
-        //            }
         for (MyCalendar myCalendar : sehedules) {
             try {
 
-                Date date = sim.parse(myCalendar.getDate());
                 //数据库日程时间
                 Calendar ctime = Calendar.getInstance();
                 ctime.clear();
-                ctime.set(date.getYear(), date.getMonth(), date.getDay());
+                SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日");
+                String s[] = myCalendar.getDate().split(" ");
+                ctime.setTime(sim.parse(s[0]));
                 //日历点击时间
                 Calendar clicktime = Calendar.getInstance();
                 clicktime.clear();
-                clicktime.set(mainYear, mainMonth, mainDay);
+                clicktime.set(mainYear, mainMonth - 1, mainDay);
                 //现在时间
                 Calendar nowtime = Calendar.getInstance();
-
-                switch (myCalendar.getTitle()) {
+                boolean additme = false;
+                String title = null;
+                int image = 0;
+                switch (myCalendar.getCategory()) {
                     case "日程":
-                        boolean additme=false;
                         switch (myCalendar.getRate()) {
                             case "一次性活动":
                                 if (clicktime.getTime().equals(ctime.getTime())) {
-                                    additme=true;
+                                    additme = true;
                                 }
                                 break;
                             case "每天":
                                 if (!(clicktime.getTime().before(ctime.getTime()))) {
-                                    additme=true;
+                                    additme = true;
                                 }
                                 break;
                             case "每周":
                                 if ((!(clicktime.getTime().before(ctime.getTime()))) && (
                                         clicktime.get(Calendar.DAY_OF_WEEK) == ctime.get(Calendar.DAY_OF_WEEK))) {
-                                    additme=true;
+                                    additme = true;
                                 }
                                 break;
                             case "每月":
                                 if ((!(clicktime.getTime().before(ctime.getTime()))) && (
                                         clicktime.get(Calendar.DAY_OF_MONTH) == ctime.get(Calendar.DAY_OF_MONTH))) {
-                                    additme=true;
+                                    additme = true;
                                 }
                                 break;
                             case "每年":
-                                if ((!(clicktime.getTime().before(ctime.getTime()))) && (
-                                        clicktime.get(Calendar.MONTH) == ctime.get(Calendar.MONTH))&&
-                                        (clicktime.get(Calendar.DAY_OF_MONTH)==ctime.get(Calendar.DAY_OF_MONTH))) {
-                                    additme=true;
+                                if ((!(clicktime.getTime().before(ctime.getTime())))
+                                        && (clicktime.get(Calendar.MONTH)==ctime.get(Calendar.MONTH))
+                                        &&(clicktime.)) {
+                                    additme = true;
                                 }
                             default:
                                 break;
                         }
-                        if (additme){
-                            ToDoListItem item = new ToDoListItem(R.drawable.ic_todolist_ric_click, myCalendar.getTitle(), myCalendar.getContent());
-                            scheduleList.add(item);
-                        }
+                        image = R.drawable.ic_todolist_ric_click;
+                        title = myCalendar.getTitle();
                         break;
                     case "生日":
-
-                        break;
                     case "纪念日":
-
+                        String remark[] = myCalendar.getRemark().split("");
+                        for (String i : remark) {
+                            Calendar c = ctime;
+                            switch (i) {
+                                case "1":
+                                    c.add(Calendar.DATE, 30);
+                                    if (c.getTime().equals(clicktime.getTime())) {
+                                        additme = true;
+                                        title = myCalendar.getTitle() + "30天" + myCalendar.getCategory();
+                                    }
+                                    break;
+                                case "2":
+                                    c.add(Calendar.DATE, 100);
+                                    if (c.getTime().equals(clicktime.getTime())) {
+                                        additme = true;
+                                        title = myCalendar.getTitle() + "100天" + myCalendar.getCategory();
+                                    }
+                                    break;
+                                case "3":
+                                    if ((clicktime.getTimeInMillis()>=ctime.getTimeInMillis()) &&
+                                            (clicktime.get(Calendar.MONTH) == ctime.get(Calendar.MONTH)) &&
+                                            (clicktime.get(Calendar.DAY_OF_MONTH) == ctime.get(Calendar.DAY_OF_MONTH))) {
+                                        additme = true;
+                                        title = myCalendar.getTitle() + (clicktime.getTimeInMillis() - ctime.getTimeInMillis()) / (24 * 60 * 60 * 1000) + "周年" + myCalendar.getCategory();
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        if (myCalendar.getCategory().equals("生日")) {
+                            image = R.drawable.ic_todolist_shengri_click;
+                        } else {
+                            image = R.drawable.ic_todolist_jinian_click;
+                        }
                         break;
                     case "倒数日":
-
+                        if ((ctime.getTimeInMillis() >= nowtime.getTimeInMillis() && clicktime.getTimeInMillis() <= ctime.getTimeInMillis())
+                                || clicktime.getTimeInMillis() == ctime.getTimeInMillis()) {
+                            title = myCalendar.getTitle() + "(" + (ctime.getTimeInMillis() - clicktime.getTimeInMillis()) / (24 * 60 * 60 * 1000) + "天后)";
+                            additme = true;
+                        }
                         break;
                     default:
-
                         break;
+                }
+                if (additme) {
+                    ToDoListItem item = new ToDoListItem(myCalendar.getId(), image, title, myCalendar.getContent());
+                    scheduleList.add(item);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        LinearLayoutManager manager=new LinearLayoutManager(this);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
-        ToDoListAdapter adapter=new ToDoListAdapter(scheduleList);
+        ToDoListAdapter adapter = new ToDoListAdapter(scheduleList);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }

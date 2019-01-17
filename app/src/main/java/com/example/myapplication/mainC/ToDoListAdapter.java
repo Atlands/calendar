@@ -50,7 +50,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ToDoListItem toDoListItem = toDoListItems.get(position);
-        Glide.with(context).load(toDoListItem.getImageId()).into(holder.toDoListImageView);
+        int id=toDoListItem.getsId();
+        holder.toDoListImageView.setImageResource(toDoListItem.getImageId());
         holder.toDoListTitle.setText(toDoListItem.getTitle());
         holder.toDoListRemark.setText(toDoListItem.getRemark());
     }

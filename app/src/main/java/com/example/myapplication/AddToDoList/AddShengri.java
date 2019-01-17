@@ -23,8 +23,7 @@ public class AddShengri extends Fragment implements View.OnClickListener {
 
     private SharedPreferences.Editor editor;
 
-    String remark = "";
-    String text = "将于 " + beginTime.getText().toString() + " 后的";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,7 +72,6 @@ public class AddShengri extends Fragment implements View.OnClickListener {
         title.setText(sharedPreferences.getString("title", null));
         content.setText(sharedPreferences.getString("content", null));
         beginTime.setText(sharedPreferences.getString("selectDate", null));
-        end_text.setText(text);
     }
 
     private void bindView(View view) {
@@ -107,6 +105,8 @@ public class AddShengri extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+        String remark = "";
+        String text ="将于 " + beginTime.getText().toString() + " 后的";
         if (checkBox1.isChecked()) {
             remark += "1";
             String date[] = beginTime.getText().toString().split(" ");

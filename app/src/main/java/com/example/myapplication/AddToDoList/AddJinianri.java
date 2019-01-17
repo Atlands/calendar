@@ -25,12 +25,13 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
     private SharedPreferences.Editor editor;
 
     String remark = "";
-    String text = "将于 " + beginTime.getText().toString() + " 后的";
+    String text;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_add_jinianri, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_jinianri, container, false);
         bindView(view);
         editor = getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE).edit();
         editor.putString("category", "纪念日");
@@ -66,6 +67,7 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
         });
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -75,6 +77,7 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
         beginTime.setText(sharedPreferences.getString("selectDate", null));
         end_text.setText(text);
     }
+
     private void bindView(View view) {
         title = view.findViewById(R.id.jinian_title);
         content = view.findViewById(R.id.jinian_content);
@@ -106,6 +109,7 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+        text = "将于 " + beginTime.getText().toString() + " 后的";
         if (checkBox1.isChecked()) {
             remark += "1";
             String date[] = beginTime.getText().toString().split(" ");
