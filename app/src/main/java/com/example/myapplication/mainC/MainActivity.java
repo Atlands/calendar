@@ -2,6 +2,8 @@ package com.example.myapplication.mainC;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -38,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private Miui10Calendar mainCalendar;
     private TextView toolbarTitle, todayRemark;
     private RecyclerView recyclerView;
-    private FloatingActionButton fabAddList;
+    private FloatingActionButton fabAddList, today;
     private int mainYear, mainMonth, mainDay, mainHour, mainMinute;
 
     private List<ToDoListItem> scheduleList = new ArrayList<>();
-    SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
+    private SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -69,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 toolbarTitle.setText(mainYear + "年" + mainMonth + "月");
                 todayRemark.setText(" 农历" + date.lunar.lunarYearStr + "年 " + date.lunar.lunarMonthStr + date.lunar.lunarDayStr);
 
-                initSchedule();
+                Message message = new Message();
+                message.what = 1;
+                handler.sendMessage(message);
             }
 
             @Override
@@ -78,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        today.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainCalendar.toToday();
+            }
+        });
         fabAddList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,27 +106,58 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Calendar selectTime = Calendar.getInstance();
+                    Date selectDate = sim.parse(mainYear + "年" + mainMonth + "月" + mainDay + "日 "
+                            + selectTime.get(Calendar.HOUR_OF_DAY) + ":" + selectTime.get(Calendar.MINUTE));
+                    SharedPreferences.Editor editor = getSharedPreferences("selectdate", MODE_PRIVATE).edit();
+                    editor.clear();
+                    editor.putString("selectDate", sim.format(selectDate));
+                    editor.apply();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Message message = new Message();
+        message.what = 1;
+        handler.sendMessage(message);
     }
 
     private void initSchedule() {
         scheduleList.clear();
+        //日历点击时间
+        Calendar clicktime = Calendar.getInstance();
+        clicktime.clear();
+        clicktime.set(mainYear, mainMonth - 1, mainDay);
+        //现在时间
+        Calendar nowtime = Calendar.getInstance();
+        if (clicktime.get(Calendar.YEAR) == nowtime.get(Calendar.YEAR)
+                && clicktime.get(Calendar.MONTH) == nowtime.get(Calendar.MONTH)
+                && clicktime.get(Calendar.DAY_OF_MONTH) == nowtime.get(Calendar.DAY_OF_MONTH)) {
+            today.setVisibility(View.GONE);
+        } else {
+            today.setVisibility(View.VISIBLE);
+        }
 
         List<MyCalendar> sehedules = LitePal.findAll(MyCalendar.class);
         for (MyCalendar myCalendar : sehedules) {
             try {
-
                 //数据库日程时间
                 Calendar ctime = Calendar.getInstance();
                 ctime.clear();
                 SimpleDateFormat sim = new SimpleDateFormat("yyyy年MM月dd日");
                 String s[] = myCalendar.getDate().split(" ");
                 ctime.setTime(sim.parse(s[0]));
-                //日历点击时间
-                Calendar clicktime = Calendar.getInstance();
-                clicktime.clear();
-                clicktime.set(mainYear, mainMonth - 1, mainDay);
-                //现在时间
-                Calendar nowtime = Calendar.getInstance();
+
                 boolean additme = false;
                 String title = null;
                 int image = 0;
@@ -147,8 +188,8 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case "每年":
                                 if ((!(clicktime.getTime().before(ctime.getTime())))
-                                        && (clicktime.get(Calendar.MONTH)==ctime.get(Calendar.MONTH))
-                                        &&(clicktime.)) {
+                                        && (clicktime.get(Calendar.MONTH) == ctime.get(Calendar.MONTH))
+                                        && (clicktime.get(Calendar.DAY_OF_MONTH) == ctime.get(Calendar.DAY_OF_MONTH))) {
                                     additme = true;
                                 }
                             default:
@@ -159,9 +200,15 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case "生日":
                     case "纪念日":
+                        if (myCalendar.getCategory().equals("生日")) {
+                            image = R.drawable.ic_todolist_shengri_click;
+                        } else {
+                            image = R.drawable.ic_todolist_jinian_click;
+                        }
                         String remark[] = myCalendar.getRemark().split("");
                         for (String i : remark) {
-                            Calendar c = ctime;
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(sim.parse(s[0]));
                             switch (i) {
                                 case "1":
                                     c.add(Calendar.DATE, 30);
@@ -178,21 +225,17 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     break;
                                 case "3":
-                                    if ((clicktime.getTimeInMillis()>=ctime.getTimeInMillis()) &&
+                                    if ((clicktime.getTimeInMillis() >= ctime.getTimeInMillis()) &&
                                             (clicktime.get(Calendar.MONTH) == ctime.get(Calendar.MONTH)) &&
                                             (clicktime.get(Calendar.DAY_OF_MONTH) == ctime.get(Calendar.DAY_OF_MONTH))) {
                                         additme = true;
-                                        title = myCalendar.getTitle() + (clicktime.getTimeInMillis() - ctime.getTimeInMillis()) / (24 * 60 * 60 * 1000) + "周年" + myCalendar.getCategory();
+                                        title = myCalendar.getTitle() + (clicktime.get(Calendar.YEAR) - ctime.get(Calendar.YEAR)) + "周年" + myCalendar.getCategory();
                                     }
                                     break;
                                 default:
                                     break;
                             }
-                        }
-                        if (myCalendar.getCategory().equals("生日")) {
-                            image = R.drawable.ic_todolist_shengri_click;
-                        } else {
-                            image = R.drawable.ic_todolist_jinian_click;
+                            if (additme) break;
                         }
                         break;
                     case "倒数日":
@@ -220,6 +263,20 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    initSchedule();
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     private void init() {
         toolbar = findViewById(R.id.toolbar);
@@ -229,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
         todayRemark = findViewById(R.id.today_rm);
         recyclerView = findViewById(R.id.recycler_view);
         fabAddList = findViewById(R.id.fab);
+        today = findViewById(R.id.today);
     }
 
     @Override

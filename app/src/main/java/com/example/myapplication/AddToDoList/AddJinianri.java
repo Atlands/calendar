@@ -76,6 +76,9 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
         content.setText(sharedPreferences.getString("content", null));
         beginTime.setText(sharedPreferences.getString("selectDate", null));
         end_text.setText(text);
+        String remark=sharedPreferences.getString("remark",null);
+        if (remark.contains("1")) checkBox1.setChecked(true);
+        if (remark.contains("2")) checkBox2.setChecked(true);
     }
 
     private void bindView(View view) {

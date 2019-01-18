@@ -1,6 +1,7 @@
 package com.example.myapplication.mainC;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +13,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.ToDoListContent.ToDoListContnet;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder> {
     private Context context;
     private List<ToDoListItem> toDoListItems;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        //View tdview;
         CardView cardView;
         ImageView toDoListImageView;
         TextView toDoListTitle, toDoListRemark;
@@ -39,11 +43,21 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         if (context == null) {
             context = parent.getContext();
         }
         View view = LayoutInflater.from(context).inflate(R.layout.today_to_do_list, parent, false);
+        ViewHolder holder= new ViewHolder(view);
+        final ToDoListItem toDoListItem = toDoListItems.get(viewType);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(parent.getContext(),ToDoListContnet.class);
+                intent.putExtra("id",toDoListItem.getsId());
+                parent.getContext().startActivity(intent);
+            }
+        });
         return new ViewHolder(view);
     }
 

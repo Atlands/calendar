@@ -44,7 +44,25 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        fg1.performClick();
+        SharedPreferences sharedPreferences = getSharedPreferences("selectdate", MODE_PRIVATE);
+        Log.d("hhh",sharedPreferences.getString("cagegory", ""));
+        switch (sharedPreferences.getString("cagegory", "日程")) {
+            case "日程":
+                fg1.performClick();
+                break;
+            case "生日":
+                fg2.performClick();
+                Log.d("hhh","fg2");
+                break;
+            case "纪念日":
+                fg3.performClick();
+                break;
+            case "倒数日":
+                fg4.performClick();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -62,21 +80,21 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.todolist_sure:
                 final SharedPreferences sharedPreferences = getSharedPreferences("selectdate", Context.MODE_PRIVATE);
-                if (sharedPreferences.getString("title",null).equals("")){
-                    Toast.makeText(AddToDoList.this,"标题不能为空",Toast.LENGTH_SHORT).show();
+                if (sharedPreferences.getString("title", null).equals("")) {
+                    Toast.makeText(AddToDoList.this, "标题不能为空", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String category=sharedPreferences.getString("category","日程");
-                        MyCalendar myCalendar=new MyCalendar();
+                        String category = sharedPreferences.getString("category", "日程");
+                        MyCalendar myCalendar = new MyCalendar();
                         myCalendar.setCategory(category);
-                        myCalendar.setTitle(sharedPreferences.getString("title",null));
-                        myCalendar.setContent(sharedPreferences.getString("content",null));
-                        myCalendar.setDate(sharedPreferences.getString("selectDate",null));
-                        myCalendar.setRate(sharedPreferences.getString("rate","一次性活动"));
-                        myCalendar.setRemark(sharedPreferences.getString("remark","3"));
+                        myCalendar.setTitle(sharedPreferences.getString("title", null));
+                        myCalendar.setContent(sharedPreferences.getString("content", null));
+                        myCalendar.setDate(sharedPreferences.getString("selectDate", null));
+                        myCalendar.setRate(sharedPreferences.getString("rate", "一次性活动"));
+                        myCalendar.setRemark(sharedPreferences.getString("remark", "3"));
                         myCalendar.save();
                     }
                 }).start();
@@ -123,7 +141,7 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
 
     private void bindView() {
         toolbar = findViewById(R.id.todolist_back);
-        sure=findViewById(R.id.todolist_sure);
+        sure = findViewById(R.id.todolist_sure);
         fg1 = findViewById(R.id.richeng);
         fg2 = findViewById(R.id.shengri);
         fg3 = findViewById(R.id.jinian);

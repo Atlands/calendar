@@ -24,6 +24,7 @@
         <activity
             android:name=".AddToDoList.Rate"
             android:theme="@style/dialogstyle" />
+        <activity android:name=".ToDoListContent.ToDoListContnet"></activity>
     </application>
 
 </manifest>

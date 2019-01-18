@@ -33,7 +33,13 @@
         android:gravity="top"
         android:hint="详细内容"
         android:padding="16dp" />
-
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#cdcdcd" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -60,7 +66,12 @@
             android:gravity="center_vertical"
             android:text="2018年12月31日" />
     </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#cdcdcd" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,7 +103,13 @@
             android:enabled="false"
             android:text="每年提醒" />
     </LinearLayout>
-
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#cdcdcd" />
     <TextView
         android:id="@+id/jinian_end_text"
         android:layout_width="wrap_content"
