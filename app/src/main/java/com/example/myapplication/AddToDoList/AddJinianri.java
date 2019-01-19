@@ -76,9 +76,10 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
         content.setText(sharedPreferences.getString("content", null));
         beginTime.setText(sharedPreferences.getString("selectDate", null));
         end_text.setText(text);
-        String remark=sharedPreferences.getString("remark",null);
+        String remark = sharedPreferences.getString("remark", null);
         if (remark.contains("1")) checkBox1.setChecked(true);
         if (remark.contains("2")) checkBox2.setChecked(true);
+        initRemark();
     }
 
     private void bindView(View view) {
@@ -104,14 +105,16 @@ public class AddJinianri extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.jinian_30:
-                break;
             case R.id.jinian_100:
-                break;
             case R.id.jinn_every_year:
+                initRemark();
                 break;
             default:
                 break;
         }
+    }
+
+    private void initRemark() {
         text = "将于 " + beginTime.getText().toString() + " 后的";
         if (checkBox1.isChecked()) {
             remark += "1";

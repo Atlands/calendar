@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,6 +21,8 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.db.MyCalendar;
 import com.example.myapplication.mainC.MainActivity;
+
+import org.litepal.LitePal;
 
 public class AddToDoList extends AppCompatActivity implements View.OnClickListener {
 
@@ -45,14 +46,12 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
         SharedPreferences sharedPreferences = getSharedPreferences("selectdate", MODE_PRIVATE);
-        Log.d("hhh",sharedPreferences.getString("cagegory", ""));
-        switch (sharedPreferences.getString("cagegory", "日程")) {
+        switch (sharedPreferences.getString("category", "日程")) {
             case "日程":
                 fg1.performClick();
                 break;
             case "生日":
                 fg2.performClick();
-                Log.d("hhh","fg2");
                 break;
             case "纪念日":
                 fg3.performClick();
@@ -61,6 +60,7 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
                 fg4.performClick();
                 break;
             default:
+                fg1.performClick();
                 break;
         }
     }
@@ -84,6 +84,10 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
                     Toast.makeText(AddToDoList.this, "标题不能为空", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                Intent intent1 = getIntent();
+                int id = intent1.getIntExtra("id", 0);
+                if (id != 0)
+                    LitePal.delete(MyCalendar.class, id);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -98,7 +102,7 @@ public class AddToDoList extends AppCompatActivity implements View.OnClickListen
                         myCalendar.save();
                     }
                 }).start();
-                Intent intent=new Intent(this,MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;

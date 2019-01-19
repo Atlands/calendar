@@ -74,6 +74,7 @@ public class AddShengri extends Fragment implements View.OnClickListener {
         String remark = sharedPreferences.getString("remark", "3");
         if (remark.contains("1")) checkBox1.setChecked(true);
         if (remark.contains("2")) checkBox2.setChecked(true);
+        initRemark();
     }
 
     private void bindView(View view) {
@@ -99,14 +100,17 @@ public class AddShengri extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.shengri_30:
-                break;
             case R.id.shengri_100:
-                break;
             case R.id.shengri_year:
+                initRemark();
                 break;
             default:
                 break;
         }
+
+    }
+
+    private void initRemark() {
         String remark = "";
         String text = "将于 " + beginTime.getText().toString() + " 后的";
         if (checkBox1.isChecked()) {

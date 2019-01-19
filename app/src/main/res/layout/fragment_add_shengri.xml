@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/todolist_edit"
+            android:hint="寿星姓名"
             android:padding="8dp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -107,17 +108,20 @@
             android:enabled="false"
             android:text="每年提醒" />
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="#cdcdcd" />
+
     <TextView
         android:id="@+id/shengri_end_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
         android:textSize="12sp" />
 
     <View

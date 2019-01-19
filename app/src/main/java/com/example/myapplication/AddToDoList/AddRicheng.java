@@ -40,9 +40,9 @@ public class AddRicheng extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_richeng, container, false);
         initWidget(view);
-        editor= getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE).edit();
+        editor = getActivity().getSharedPreferences("selectdate", Context.MODE_PRIVATE).edit();
         editor.putString("category", "日程");
-        editor.putString("rate","一次性活动");
+        editor.putString("rate", "一次性活动");
         inputLayout.setHint("日程");
         ricTitle = inputLayout.getEditText();
         String errorText = "日程名不能为空";
